@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tapisphere | Tapis Artisanaux de Luxe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="./assets/logo.jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            color: #5a4a42;
+        }
+        .hero-pattern {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0iI2Q3YjliMCI+PC9yZWN0PjxyZWN0IHg9IjIwIiB5PSIwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiNkN2I5YjAiPjwvcmVjdD48cmVjdCB4PSIwIiB5PSIyMCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjZDdiOWIwIj48L3JlY3Q+PHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiNkN2I5YjAiPjwvcmVjdD48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjcGF0dGVybikiIG9wYWNpdHk9IjAuMSI+PC9yZWN0Pjwvc3ZnPg==');
+        }
+        .carpet-card {
+            transition: all 0.3s ease;
+        }
+        .carpet-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .carpet-card:hover .carpet-overlay {
+            opacity: 1;
+        }
+        .testimonial-card {
+            transition: all 0.3s ease;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .nav-link::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: #a38b7a;
+            transition: width 0.3s;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .filter-btn.active {
+            background-color: #a38b7a;
+            color: white;
+        }
+        .explore-btn {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+        .explore-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .mobile-menu {
+            transform: translateY(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .mobile-menu.active {
+            transform: translateY(0);
+        }
+        .hamburger {
+            transition: all 0.3s ease;
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+        .hero-section {
+            position: relative;
+            height: 100dvh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        .hero-bg {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            background-image: url('https://penkethcarpets.co.uk/wp-content/uploads/2021/11/a@2x-100.jpg');
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.1s ease-out;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-content {
+            max-width: 90%;
+            max-height: 90dvh;
+            margin: auto;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            width: auto;
+            height: auto;
+        }
+        .modal-content img {
+            max-width: 100%;
+            max-height: 80dvh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+        .modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .modal-close:hover {
+            color: #d7b9b0;
+        }
+        .alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem;
+            background-color: #5a4a42;
+            color: white;
+            border-radius: 0.5rem;
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .alert.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="bg-[#f9f5f0]">
+    <!-- Alert Element -->
+    <div id="alert" class="alert">
+        <p class="text-white">Cette fonctionnalité sera bientôt disponible !</p>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <a href="#" class="text-3xl font-bold text-[#5a4a42]" onclick="showAlert(event)">TAPISPHERE</a>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#" class="nav-link text-[#5a4a42] hover:text-[#a38b7a] font-semibold text-lg" onclick="showAlert(event)">Accueil</a>
+                    <a href="#collection" class="nav-link text-[#5a4a42] hover:text-[#a38b7a] font-semibold text-lg">Collections</a>
+                    <a href="#footer" class="nav-link text-[#5a4a42] hover:text-[#a38b7a] font-semibold text-lg">Contact</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <a href="#" class="text-[#5a4a42] hover:text-[#a38b7a]" onclick="showAlert(event)">
+                        <i class="fas fa-search text-lg"></i>
+                    </a>
+                    <button class="md:hidden text-[#5a4a42] hamburger" id="hamburger">
+                        <span class="block w-6 h-0.5 bg-[#5a4a42] mb-1.5 transition-all"></span>
+                        <span class="block w-6 h-0.5 bg-[#5a4a42] mb-1.5 transition-all"></span>
+                        <span class="block w-6 h-0.5 bg-[#5a4a42] transition-all"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="mobile-menu fixed top-0 left-0 w-full bg-white shadow-lg z-50 md:hidden" id="mobileMenu">
+            <div class="container mx-auto px-6 py-4">
+                <div class="flex flex-col space-y-4">
+                    <a href="#" class="text-[#5a4a42] hover:text-[#a38b7a] text-lg font-semibold py-2" onclick="showAlert(event)">Accueil</a>
+                    <a href="#collection" class="text-[#5a4a42] hover:text-[#a38b7a] text-lg font-semibold py-2">Collections</a>
+                    <a href="#footer" class="text-[#5a4a42] hover:text-[#a38b7a] text-lg font-semibold py-2">Contact</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-bg" id="heroBg"></div>
+        <div class="absolute inset-0 bg-black opacity-40"></div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-2xl">
+                <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">Tapishpere</h1>
+                <p class="text-xl md:text-2xl text-white mb-8">Découvrez le monde de tapisphere ! Nous proposons une large gamme de tapis pour tous les styles et budgets. Rejoignez-nous pour découvrir vos nouveaux tapis préférés !</p>
+                <a href="#" class="explore-btn bg-white text-[#5a4a42] hover:bg-[#f9f5f0] px-10 py-4 text-xl font-bold transition duration-300 inline-block" onclick="showAlert(event)">Explorer les Collections</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Collections -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-[#5a4a42] mb-4">Collections en Vedette</h2>
+                <div class="w-24 h-1 bg-[#a38b7a] mx-auto"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Collection 1 -->
+                <div class="relative overflow-hidden group">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Flag_of_Canada_%28Pantone%29.svg" alt="Collection Canadienne" class="w-full h-96 object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                        <div class="text-center p-6">
+                            <h3 class="text-2xl font-bold text-white mb-2">Canadienne</h3>
+                            <p class="text-white mb-4">Designs séculaires avec une durabilité moderne</p>
+                            <a href="#collection" class="border border-white text-white px-6 py-2 inline-block hover:bg-white hover:text-[#5a4a42] transition duration-300">Voir la Collection</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Collection 2 -->
+                <div class="relative overflow-hidden group">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Flag_of_Turkey.svg/960px-Flag_of_Turkey.svg.png" alt="Collection Turque" class="w-full h-96 object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                        <div class="text-center p-6">
+                            <h3 class="text-2xl font-bold text-white mb-2">Turque</h3>
+                            <p class="text-white mb-4">Designs contemporains pour les intérieurs d'aujourd'hui</p>
+                            <a href="#collection" class="border border-white text-white px-6 py-2 inline-block hover:bg-white hover:text-[#5a4a42] transition duration-300">Voir la Collection</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shop Section -->
+    <section id="collection" class="py-20 bg-[#f9f5f0]">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-[#5a4a42] mb-4">Nos Collections</h2>
+                <div class="w-24 h-1 bg-[#a38b7a] mx-auto"></div>
+            </div>
+            
+            <!-- Filters -->
+            <div class="flex flex-wrap justify-center mb-12 gap-4">
+                <button class="filter-btn px-6 py-2 rounded-full border border-[#a38b7a] text-[#5a4a42] hover:bg-[#a38b7a] hover:text-white transition duration-300 active">Tout</button>
+                <button onclick="showTurkish()" class="filter-btn px-6 py-2 rounded-full border border-[#a38b7a] text-[#5a4a42] hover:bg-[#a38b7a] hover:text-white transition duration-300">Turque</button>
+                <button onclick="showCanadian()" class="filter-btn px-6 py-2 rounded-full border border-[#a38b7a] text-[#5a4a42] hover:bg-[#a38b7a] hover:text-white transition duration-300">Canadienne</button>
+            </div>
+            
+            <!-- Products Grid -->
+            <div class="flex flex-wrap justify-center gap-8">
+                <!-- Product 1 -->
+                <div class="carpet-card bg-white rounded overflow-hidden shadow-sm relative w-full max-w-sm">
+                    <div class="relative">
+                        <img src="assets/tapie1.webp" alt="Tapis Nordik Chic" class="w-full h-80 object-cover">
+                        <div class="carpet-overlay absolute inset-0 bg-black bg-opacity-0 flex items-center justify-center opacity-0 transition duration-300">
+                            <button onclick="openModal('assets/tapie1.webp')" class="bg-[#5a4a42] text-white px-6 py-2 hover:bg-[#3a2e28] transition duration-300">Aperçu Rapide</button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-[#5a4a42] mb-1">Nordik Chic</h3>
+                        <p class="text-[#a38b7a] mb-3">Collection Canadienne</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-bold text-[#5a4a42]">1 389 DH</span>
+                            <button class="text-[#5a4a42] hover:text-[#a38b7a]">
+                                <i class="fas fa-heart text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="carpet-card bg-white rounded overflow-hidden shadow-sm relative w-full max-w-sm">
+                    <div class="relative">
+                        <img src="assets/tapie2.webp" alt="Tapis Bois d'Hiver" class="w-full h-80 object-cover">
+                        <div class="carpet-overlay absolute inset-0 bg-black bg-opacity-0 flex items-center justify-center opacity-0 transition duration-300">
+                            <button onclick="openModal('assets/tapie2.webp')" class="bg-[#5a4a42] text-white px-6 py-2 hover:bg-[#3a2e28] transition duration-300">Aperçu Rapide</button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-[#5a4a42] mb-1">Bois d'Hiver</h3>
+                        <p class="text-[#a38b7a] mb-3">Collection Turque</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-bold text-[#5a4a42]">699 DH</span>
+                            <button class="text-[#5a4a42] hover:text-[#a38b7a]">
+                                <i class="fas fa-heart text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="carpet-card bg-white rounded overflow-hidden shadow-sm relative w-full max-w-sm">
+                    <div class="relative">
+                        <img src="assets/tapie3.webp" alt="Tapis Graphika Gris" class="w-full h-80 object-cover">
+                        <div class="carpet-overlay absolute inset-0 bg-black bg-opacity-0 flex items-center justify-center opacity-0 transition duration-300">
+                            <button onclick="openModal('assets/tapie3.webp')" class="bg-[#5a4a42] text-white px-6 py-2 hover:bg-[#3a2e28] transition duration-300">Aperçu Rapide</button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-[#5a4a42] mb-1">Graphika Gris</h3>
+                        <p class="text-[#a38b7a] mb-3">Collection Canadienne</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-bold text-[#5a4a42]">1 399 DH</span>
+                            <button class="text-[#5a4a42] hover:text-[#a38b7a]">
+                                <i class="fas fa-heart text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="carpet-card bg-white rounded overflow-hidden shadow-sm relative w-full max-w-sm">
+                    <div class="relative">
+                        <img src="assets/tapie4.webp" alt="Tapis Linéa Taupe" class="w-full h-80 object-cover">
+                        <div class="carpet-overlay absolute inset-0 bg-black bg-opacity-0 flex items-center justify-center opacity-0 transition duration-300">
+                            <button onclick="openModal('assets/tapie4.webp')" class="bg-[#5a4a42] text-white px-6 py-2 hover:bg-[#3a2e28] transition duration-300">Aperçu Rapide</button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-[#5a4a42] mb-1">Linéa Taupe</h3>
+                        <p class="text-[#a38b7a] mb-3">Collection Turque</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-bold text-[#5a4a42]">699 DH</span>
+                            <button class="text-[#5a4a42] hover:text-[#a38b7a]">
+                                <i class="fas fa-heart text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-16 bg-[#5a4a42] text-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold mb-6">Rejoignez Notre Monde</h2>
+                <p class="text-xl mb-8">Abonnez-vous pour recevoir des offres exclusives, de l'inspiration design et des histoires de nos artisans.</p>
+                <form class="flex flex-col sm:flex-row max-w-xl mx-auto" onsubmit="showAlert(event)">
+                    <input type="email" placeholder="Votre adresse email" class="flex-grow px-6 py-3 text-[#5a4a42] focus:outline-none mb-4 sm:mb-0 sm:mr-4">
+                    <button type="submit" class="bg-[#a38b7a] hover:bg-[#8a7566] px-8 py-3 font-medium transition duration-300">S'abonner</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer" class="bg-[#3a2e28] text-white pt-16 pb-8">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div>
+                    <h3 class="text-2xl font-bold mb-6">TAPISPHERE</h3>
+                    <p class="mb-4">Élever les intérieurs avec des tapis artisanaux qui racontent des histoires de tradition, d'artisanat et de beauté intemporelle.</p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.instagram.com/tapisphere_/" target="_blank" class="text-white hover:text-[#d7b9b0] text-xl"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg mb-6">Boutique</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#collection" class="hover:text-[#d7b9b0] transition duration-300">Tous les Tapis</a></li>
+                        <li><a href="#collection" class="hover:text-[#d7b9b0] transition duration-300">Collection Turque</a></li>
+                        <li><a href="#collection" class="hover:text-[#d7b9b0] transition duration-300">Collection Canadienne</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg mb-6">Contact</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-center">
+                            <i class="fas fa-phone-alt mr-3 text-[#d7b9b0]"></i>
+                            <span>+212 618224705</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3 text-[#d7b9b0]"></i>
+                            <span>contact.tapisphere@gmail.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-[#5a4a42] pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p>© 2025 Tapisphere. Tous droits réservés.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-[#d7b9b0] transition duration-300" onclick="showAlert(event)">Politique de Confidentialité</a>
+                    <a href="#" class="hover:text-[#d7b9b0] transition duration-300" onclick="showAlert(event)">Conditions d'Utilisation</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Quick View Modal -->
+    <div class="modal" id="quickViewModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <img src="" alt="Image du Produit" class="w-full h-auto">
+        </div>
+    </div>
+
+    <script>
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const carpetCards = document.querySelectorAll('.carpet-card');
+        
+        function filterCarpets(collection) {
+            carpetCards.forEach(card => {
+                const cardCollection = card.querySelector('p').textContent;
+                if (collection === 'Tout' || cardCollection.includes(collection)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                // Get the collection name from the button text
+                const collection = button.textContent.trim();
+                filterCarpets(collection);
+            });
+        });
+        
+        // Mobile menu functionality
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            }
+        });
+
+        // Mouse movement parallax effect
+        const heroSection = document.querySelector('.hero-section');
+        const heroBg = document.getElementById('heroBg');
+
+        heroSection.addEventListener('mousemove', (e) => {
+            const { clientX, clientY } = e;
+            const { left, top, width, height } = heroSection.getBoundingClientRect();
+            
+            // Calculate mouse position relative to the section
+            const x = (clientX - left) / width;
+            const y = (clientY - top) / height;
+            
+            // Calculate the movement (adjust the multiplier to control the effect intensity)
+            const moveX = (x - 0.5) * 10;
+            const moveY = (y - 0.5) * 10;
+            
+            // Apply the transform
+            heroBg.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        });
+
+        // Reset position when mouse leaves
+        heroSection.addEventListener('mouseleave', () => {
+            heroBg.style.transform = 'translate(0, 0)';
+        });
+
+        // Quick View Modal functionality
+        function openModal(imageSrc) {
+            const modal = document.getElementById('quickViewModal');
+            const modalImg = modal.querySelector('img');
+            modalImg.src = imageSrc;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('quickViewModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('quickViewModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                closeModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Alert functionality
+        function showAlert(event) {
+            event.preventDefault();
+            const alert = document.getElementById('alert');
+            alert.classList.add('show');
+            
+            // Hide alert after 3 seconds
+            setTimeout(() => {
+                alert.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
